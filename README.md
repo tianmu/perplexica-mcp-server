@@ -28,6 +28,10 @@ A Model Context Protocol (MCP) server that provides access to Perplexica's AI-po
    pip install -r requirements.txt
    pip install .
    ```
+   or
+   ```bash
+   uv tool install .
+   ```
 
 ## Configuration
 ### cline
@@ -39,6 +43,32 @@ Configure the server to cline:
       "command": "python",
       "args": [
         "-m", "perplexica_mcp_server.server"
+      ],
+      "env": {
+        "PERPLEXICA_DEFAULT_CHAT_PROVIDER":"custom_openai",
+        "PERPLEXICA_DEFAULT_CHAT_MODEL":"gpt-4.1",
+        "PERPLEXICA_CUSTOM_OPENAI_BASE_URL":"https://api.poe.com/v1",
+        "PERPLEXICA_CUSTOM_OPENAI_KEY":"your_api_key",
+        "PERPLEXICA_DEFAULT_EMBEDDING_PROVIDER":"transformers",
+        "PERPLEXICA_DEFAULT_EMBEDDING_MODEL":"xenova-bge-small-en-v1.5",
+        "PERPLEXICA_OPTIMIZATION_MODE":"balanced",
+        "PERPLEXICA_BASE_URL":"http://localhost:3000"
+      },
+      "timeout": 60,
+      "transport": "stdio"
+    }
+  }
+}
+
+```
+or
+```json
+{
+  "mcpServers": {
+    "perplexica": {
+      "command": "uvx",
+      "args": [
+        "perplexica-mcp-server"
       ],
       "env": {
         "PERPLEXICA_DEFAULT_CHAT_PROVIDER":"custom_openai",
