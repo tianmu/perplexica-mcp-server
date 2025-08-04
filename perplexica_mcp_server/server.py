@@ -567,18 +567,19 @@ async def health_check(ctx: Context) -> str:
 
 
 @mcp.resource(uri="perplexica://config")
-async def get_config(ctx: Context) -> str:
+async def get_config() -> str:
     """Get current Perplexica configuration."""
     logger.info("Getting configuration")
-    config = ctx.request_context.lifespan_context.config
+    config = load_config()
     return json.dumps(config.model_dump(), indent=2, ensure_ascii=False)
 
 
 @mcp.resource(uri="perplexica://status")
-async def get_status(ctx: Context) -> str:
+async def get_status() -> str:
     """Get Perplexica service status."""
     logger.info("Getting service status")
-    client = PerplexicaClient(ctx.request_context.lifespan_context.config)
+    config = load_config()
+    client = PerplexicaClient(config)
     async with client:
         try:
             is_healthy = await client.health_check()
@@ -596,3 +597,19 @@ async def get_status(ctx: Context) -> str:
                 "status": "error",
                 "error": str(e)
             }, indent=2, ensure_ascii=False)
+
+
+def main():
+    """Main entry point for the MCP server."""
+    try:
+        logger.info("Starting Perplexica MCP Server...")
+        mcp.run()
+    except KeyboardInterrupt:
+        logger.info("Server shutdown by user")
+    except Exception as e:
+        logger.error(f"Server error: {e}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
