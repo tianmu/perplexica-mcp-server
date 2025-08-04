@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "perplexica-mcp-server"
+version = "0.1.0"
+description = "MCP server for Perplexica AI-powered search engine"
+authors = [
+    {name = "tianmu"}
+]
+dependencies = [
+    "mcp[cli]>=1.0.0",
+    "httpx>=0.25.0",
+    "pydantic>=2.5.0",
+    "typing-extensions>=4.8.0",
+    "python-dotenv>=1.0.0"
+]
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[project.scripts]
+perplexica-mcp-server = "perplexica_mcp_server.server:main"
